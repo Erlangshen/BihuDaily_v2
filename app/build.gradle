@@ -20,10 +20,21 @@ android {
 
 ext{
     appcompatVersion='26.+'
+    rxjavaVersion='2.0.+'
+    retrofitVersion='2.4.0'
+    gsonVersion='2.8.5'
+    butterknifeVersion='8.8.1'
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "com.android.support:appcompat-v7:$appcompatVersion"
     implementation "com.android.support:design:$appcompatVersion"
+    implementation "io.reactivex.rxjava2:rxjava:$rxjavaVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxjavaVersion"
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+    implementation "com.google.code.gson:gson:$gsonVersion"
+    implementation "com.jakewharton:butterknife:$butterknifeVersion"
 }
