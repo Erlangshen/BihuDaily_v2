@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.erlangshen.R;
+import com.erlangshen.adapter.NewsListAdapter;
 import com.erlangshen.base.BaseActivity;
 import com.erlangshen.mvp.model.LatestData;
 import com.erlangshen.mvp.presenter.NewsListPresenter;
@@ -25,13 +26,9 @@ public class MainActivity extends BaseActivity implements INewListView{
     }
 
     @Override
-    protected void initView() {
+    protected void initData() {
         LinearLayoutManager manager=new LinearLayoutManager(MainActivity.this);
         newsListRv.setLayoutManager(manager);
-    }
-
-    @Override
-    protected void initData() {
         pDialog=new ProgressDialog(MainActivity.this);
         pDialog.setMessage("数据加载中...");
         nPresenter=new NewsListPresenter(MainActivity.this);
@@ -51,6 +48,16 @@ public class MainActivity extends BaseActivity implements INewListView{
 
     @Override
     public void loadNewsList(List<LatestData.StoriesEntity> stories) {
+        newsListRv.setAdapter(new NewsListAdapter(MainActivity.this,stories));
+    }
 
+    @Override
+    public void onError(Throwable e) {
+        showToast("请求失败!");
+    }
+
+    @Override
+    public void onSuccess(String text) {
+        showToast(text);
     }
 }

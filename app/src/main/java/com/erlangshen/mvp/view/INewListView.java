@@ -10,4 +10,6 @@ public interface INewListView {
     void showLoading();
     void hideLoading();
     void loadNewsList(List<LatestData.StoriesEntity> stories);
+    void onError(Throwable e);
+    void onSuccess(String text);
 }
