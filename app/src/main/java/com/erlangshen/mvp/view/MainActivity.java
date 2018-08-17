@@ -14,12 +14,11 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class MainActivity extends BaseActivity implements INewListView{
+public class MainActivity extends BaseActivity<NewsListPresenter> implements INewListView{
     @BindView(R.id.newsListRv)
     RecyclerView newsListRv;
 
     private ProgressDialog pDialog;
-    private NewsListPresenter nPresenter;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_main;
@@ -31,8 +30,12 @@ public class MainActivity extends BaseActivity implements INewListView{
         newsListRv.setLayoutManager(manager);
         pDialog=new ProgressDialog(MainActivity.this);
         pDialog.setMessage("数据加载中...");
-        nPresenter=new NewsListPresenter(MainActivity.this);
-        nPresenter.requestNewsListData();
+        mvpPresenter.requestNewsListData();
+    }
+
+    @Override
+    protected NewsListPresenter initPresenter() {
+        return new NewsListPresenter(MainActivity.this);
     }
 
     @Override
