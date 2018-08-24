@@ -1,8 +1,6 @@
-package com.erlangshen.mvp.model;
+package com.erlangshen.mvp.model
 
-import java.util.List;
-
-public class LatestData {
+class LatestData {
 
     /**
      * date : 20180809
@@ -10,102 +8,30 @@ public class LatestData {
      * top_stories : [{"image":"https://pic4.zhimg.com/v2-fd9afb4e263751e07129807ba4df781f.jpg","type":0,"id":9692595,"ga_prefix":"080821","title":"今晚点映 · 这里有嬉笑怒骂，柴米油盐，人间戏梦，滚滚红尘"},{"image":"https://pic4.zhimg.com/v2-f681f75861f8f9e24f65e5bf2be6fe5b.jpg","type":0,"id":9692494,"ga_prefix":"080913","title":"一位已婚和尚，在京都开酒吧，还是 IT 公司老板"},{"image":"https://pic4.zhimg.com/v2-e74993fb522dc8d350acf87ce7993c8f.jpg","type":0,"id":9692448,"ga_prefix":"080907","title":"如何判断一个公司值不值得待下去？"},{"image":"https://pic4.zhimg.com/v2-60c639837f71e6426ccef6a1b3d74fb3.jpg","type":0,"id":9692528,"ga_prefix":"080811","title":"请回答 2008：一切共同记忆以奥运开始，以奥运结束"},{"image":"https://pic4.zhimg.com/v2-657a8fcb6da39e357f2130f634eb01db.jpg","type":0,"id":9692442,"ga_prefix":"080713","title":"腾讯云硬盘出了个匪夷所思的 bug，导致用户数据完全丢失"}]
      */
 
-    private String date;
-    private List<StoriesEntity> stories;
-    private List<TopStoriesEntity> top_stories;
+    var date: String? = null
+    var stories: List<StoriesEntity>? = null
+    var top_stories: List<TopStoriesEntity>? = null
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public List<StoriesEntity> getStories() {
-        return stories;
-    }
-
-    public void setStories(List<StoriesEntity> stories) {
-        this.stories = stories;
-    }
-
-    public List<TopStoriesEntity> getTop_stories() {
-        return top_stories;
-    }
-
-    public void setTop_stories(List<TopStoriesEntity> top_stories) {
-        this.top_stories = top_stories;
-    }
-
-    public static class StoriesEntity {
+    class StoriesEntity {
         /**
          * images : ["https://pic3.zhimg.com/v2-0e62df4df59434dbdc28d7bb9f6021ee.jpg"]
          * type : 0
          * id : 9692675
          * ga_prefix : 080916
          * title : - 地球上现存最古老的生物是什么？
-         - 很简单，大家都一样老
+         * - 很简单，大家都一样老
          * multipic : true
          */
 
-        private int type;
-        private int id;
-        private String ga_prefix;
-        private String title;
-        private boolean multipic;
-        private List<String> images;
-
-        public int getType() {
-            return type;
-        }
-
-        public void setType(int type) {
-            this.type = type;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public String getGa_prefix() {
-            return ga_prefix;
-        }
-
-        public void setGa_prefix(String ga_prefix) {
-            this.ga_prefix = ga_prefix;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public boolean isMultipic() {
-            return multipic;
-        }
-
-        public void setMultipic(boolean multipic) {
-            this.multipic = multipic;
-        }
-
-        public List<String> getImages() {
-            return images;
-        }
-
-        public void setImages(List<String> images) {
-            this.images = images;
-        }
+        var type: Int = 0
+        var id: Int = 0
+        var ga_prefix: String? = null
+        var title: String? = null
+        var isMultipic: Boolean = false
+        var images: List<String>? = null
     }
 
-    public static class TopStoriesEntity {
+    class TopStoriesEntity {
         /**
          * image : https://pic4.zhimg.com/v2-fd9afb4e263751e07129807ba4df781f.jpg
          * type : 0
@@ -114,50 +40,10 @@ public class LatestData {
          * title : 今晚点映 · 这里有嬉笑怒骂，柴米油盐，人间戏梦，滚滚红尘
          */
 
-        private String image;
-        private int type;
-        private int id;
-        private String ga_prefix;
-        private String title;
-
-        public String getImage() {
-            return image;
-        }
-
-        public void setImage(String image) {
-            this.image = image;
-        }
-
-        public int getType() {
-            return type;
-        }
-
-        public void setType(int type) {
-            this.type = type;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public String getGa_prefix() {
-            return ga_prefix;
-        }
-
-        public void setGa_prefix(String ga_prefix) {
-            this.ga_prefix = ga_prefix;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
+        var image: String? = null
+        var type: Int = 0
+        var id: Int = 0
+        var ga_prefix: String? = null
+        var title: String? = null
     }
 }
