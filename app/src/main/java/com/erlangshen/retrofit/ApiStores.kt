@@ -9,4 +9,7 @@ import retrofit2.http.Path
 interface ApiStores {
     @GET("news/{date}")
     fun getLatestData(@Path("date") date: String): Observable<LatestData>
+
+    @GET("news/before/{date}")
+    fun getBeforeData(@Path("date") date: String): Observable<LatestData>
 }

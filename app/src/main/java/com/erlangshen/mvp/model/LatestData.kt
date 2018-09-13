@@ -9,8 +9,8 @@ class LatestData {
      */
 
     var date: String? = null
-    var stories: List<StoriesEntity>? = null
-    var top_stories: List<TopStoriesEntity>? = null
+    var stories: MutableList<StoriesEntity>? = null
+    var top_stories: MutableList<TopStoriesEntity>? = null
 
     class StoriesEntity {
         /**
@@ -28,7 +28,8 @@ class LatestData {
         var ga_prefix: String? = null
         var title: String? = null
         var isMultipic: Boolean = false
-        var images: List<String>? = null
+        var images: MutableList<String>? = null
+        var isDate:Boolean= false
     }
 
     class TopStoriesEntity {
