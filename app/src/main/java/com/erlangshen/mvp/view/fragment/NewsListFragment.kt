@@ -14,7 +14,6 @@ import com.erlangshen.mvp.model.LatestData
 import com.erlangshen.mvp.model.MessageEvent
 import com.erlangshen.mvp.presenter.NewsListPresenter
 import com.erlangshen.mvp.view.INewsListView
-import com.erlangshen.utils.DateUtils
 import kotlinx.android.synthetic.main.news_list_layout.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -29,24 +28,22 @@ class NewsListFragment : BaseFragment<NewsListPresenter>(), INewsListView {
     var layoutManager: LinearLayoutManager? = null
     var itemViewHeight: Int = 0
     val TAG: String = "abc"
-    var tList: MutableList<LatestData.StoriesEntity> = mutableListOf()
-    var date: String = ""
+    var mAdapter: NewsListAdapter? = null
 
     override fun loadNewsList(stories: MutableList<LatestData.StoriesEntity>) {
-        date = DateUtils.sysTime2
-        tList!!.clear()
-//        tList = stories.subList(0, 5)
-        tList!!.addAll(stories)
-        newsListRv.adapter = NewsListAdapter(mActivity as Context, tList!!)
+        mAdapter = NewsListAdapter(mActivity as Context, stories!!)
+        newsListRv.adapter = mAdapter
     }
 
+    /**这里面的 stories 和 loadNewsList 的 stories 其实是同一个(也就是 presenter 里面的 dataList)，所以数据源改变的时候只要 notifyDataSetChanged 就可以了*/
     override fun loadBeforeData(stories: MutableList<LatestData.StoriesEntity>) {
-        tList!!.addAll(stories)
-        newsListRv.adapter.notifyDataSetChanged()
+        /**下面这行代码放在 onSuccess 中也可以实现上拉加载更多的功能，如果这样做的话 loadBeforeData 这个方法都可以不要(数据请求成功，刷新一下 adapter 即可)*/
+        mAdapter!!.changeLoadMoreStatus(0)
     }
 
     override fun onError(e: Throwable) {
         showToast("加载数据失败")
+        mAdapter!!.changeLoadMoreStatus(0)
     }
 
     override fun onSuccess(text: String) {
@@ -78,22 +75,16 @@ class NewsListFragment : BaseFragment<NewsListPresenter>(), INewsListView {
         mSwipeRl.setProgressBackgroundColor(R.color.swipe_background_color)
         mSwipeRl.setProgressViewEndTarget(true, 100)
         mSwipeRl.setOnRefreshListener {
-            showToast("xiala")
             if (mSwipeRl.isRefreshing) mSwipeRl.isRefreshing = false
             mvpPresenter!!.requestNewsListData()
         }
-        /* 开始滚动（SCROLL_STATE_FLING），正在滚动(SCROLL_STATE_TOUCH_SCROLL), 已经停止（SCROLL_STATE_IDLE）*/
+        /**开始滚动（SCROLL_STATE_FLING），正在滚动(SCROLL_STATE_TOUCH_SCROLL), 已经停止（SCROLL_STATE_IDLE）*/
         newsListRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == newsListRv.adapter.itemCount) {//判断是否滑到最底部
-                    showToast("load more")
-                    date = DateUtils.getBeforeDay(date)
-                    var entity = LatestData.StoriesEntity()
-                    entity.title = date
-                    entity.isDate = true
-                    tList.add(entity)
-                    mvpPresenter!!.requestBeforeData(date)
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == mAdapter?.itemCount) {//判断是否滑到最底部
+                    mAdapter!!.changeLoadMoreStatus(1)
+                    mvpPresenter!!.requestBeforeData()
                 }
             }
 
@@ -115,12 +106,7 @@ class NewsListFragment : BaseFragment<NewsListPresenter>(), INewsListView {
             var recyclerHeight = itemViewHeight * newsListRv.adapter.itemCount
             Log.e(TAG, "--- recyclerHeight:$recyclerHeight ---")
             if (recyclerHeight < wm!!.defaultDisplay.height) {
-                date = DateUtils.getBeforeDay(date)
-                var entity = LatestData.StoriesEntity()
-                entity.title = date
-                entity.isDate = true
-                tList.add(entity)
-                mvpPresenter!!.requestBeforeData(date)
+                mvpPresenter!!.requestBeforeData()
             }
         }
     }

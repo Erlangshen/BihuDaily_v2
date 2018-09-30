@@ -14,24 +14,27 @@ import com.erlangshen.mvp.model.LatestData
 import com.erlangshen.mvp.model.MessageEvent
 import com.erlangshen.utils.DateUtils
 import kotlinx.android.synthetic.main.date_str_layout.view.*
+import kotlinx.android.synthetic.main.foot_view.view.*
 import kotlinx.android.synthetic.main.news_list_item.view.*
 import org.greenrobot.eventbus.EventBus
 
 class NewsListAdapter(var context: Context, var storiesEntities: MutableList<LatestData.StoriesEntity>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    var loadMoreState = 0
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
         return if (1 == viewType) Holder(LayoutInflater.from(context).inflate(R.layout.news_list_item, parent, false))
-        else DateHolder(LayoutInflater.from(context).inflate(R.layout.date_str_layout, parent, false))
+        else if (0 == viewType) DateHolder(LayoutInflater.from(context).inflate(R.layout.date_str_layout, parent, false))
+        else FootViewHolder(LayoutInflater.from(context).inflate(R.layout.foot_view, parent, false))
     }
 
-    override fun getItemCount(): Int = storiesEntities.size
+    override fun getItemCount(): Int = storiesEntities.size + 1
 
     override fun getItemViewType(position: Int): Int {
-        return if (storiesEntities.get(position).isDate) 0 else 1
+        return if (position + 1 == itemCount) -1 else if (storiesEntities[position].isDate) 0 else 1
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        var entity = storiesEntities[position]
         if (holder is Holder) {
+            var entity = storiesEntities[position]
             holder.itemView.newsListItemTv.text = entity.title
             Glide.with(context)
                     .load(entity.images!![0])
@@ -48,11 +51,26 @@ class NewsListAdapter(var context: Context, var storiesEntities: MutableList<Lat
                             }
                         }
                     })//图片加载完成的监听
-        } else {
-            holder.itemView.dateStr.text=DateUtils.getDateStr(entity.title!!)
+        } else if (holder is DateHolder) {
+            var entity = storiesEntities[position]
+            holder.itemView.dateStr.text = DateUtils.getDateStr(entity.title!!)
+        } else {//footView
+            if (0 == loadMoreState) {
+                holder.itemView.footViewPb.visibility = View.GONE
+                holder.itemView.footViewTv.text = "上拉加载更多"
+            } else {
+                holder.itemView.footViewPb.visibility = View.VISIBLE
+                holder.itemView.footViewTv.text = "正在加载数据..."
+            }
         }
+    }
+
+    public fun changeLoadMoreStatus(status: Int) {
+        loadMoreState = status
+        notifyDataSetChanged()
     }
 
     class Holder(itemView: View) : RecyclerView.ViewHolder(itemView)
     class DateHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    class FootViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 }
