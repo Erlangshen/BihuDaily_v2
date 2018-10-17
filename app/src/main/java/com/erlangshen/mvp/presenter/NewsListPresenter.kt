@@ -4,6 +4,7 @@ import com.erlangshen.base.BasePresenter
 import com.erlangshen.mvp.model.LatestData
 import com.erlangshen.mvp.view.INewsListView
 import com.erlangshen.utils.DateUtils
+import com.erlangshen.utils.DateUtils.Companion.date
 import io.reactivex.observers.DisposableObserver
 
 /**
@@ -15,6 +16,7 @@ class NewsListPresenter(iView: INewsListView) : BasePresenter<INewsListView>() {
     }
 
     var dataList: MutableList<LatestData.StoriesEntity> = mutableListOf()
+    var bihuData: LatestData = LatestData()
     var date: String = ""
     var isRequestDataOk = true
     /**
@@ -25,10 +27,10 @@ class NewsListPresenter(iView: INewsListView) : BasePresenter<INewsListView>() {
         val latestData = apiStores.getLatestData("latest")
         addSubscription(latestData, object : DisposableObserver<LatestData>() {
             override fun onNext(latestData: LatestData) {
-                date = DateUtils.sysTime2
-                dataList!!.clear()
-                dataList!!.addAll(latestData.stories!!)
-                view.loadNewsList(dataList)
+                bihuData = latestData
+                dataList.clear()
+                dataList.addAll(latestData.stories!!)
+                view.loadNewsList(bihuData)
             }
 
             override fun onError(e: Throwable) {
@@ -58,8 +60,9 @@ class NewsListPresenter(iView: INewsListView) : BasePresenter<INewsListView>() {
         val latestData = apiStores.getBeforeData(date)
         addSubscription(latestData, object : DisposableObserver<LatestData>() {
             override fun onNext(latestData: LatestData) {
-                dataList!!.addAll(latestData.stories!!)
-                view.loadBeforeData(dataList)
+                dataList.addAll(latestData.stories!!)
+                bihuData.stories = dataList
+                view.loadBeforeData(bihuData)
             }
 
             override fun onError(e: Throwable) {

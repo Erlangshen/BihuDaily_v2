@@ -12,11 +12,11 @@ interface INewsListView : BaseView {
     /**
      * 请求最新新闻
      */
-    fun loadNewsList(stories: MutableList<LatestData.StoriesEntity>)
+    fun loadNewsList(data: LatestData)
     /**
      * 请求往日新闻
      */
-    fun loadBeforeData(stories: MutableList<LatestData.StoriesEntity>)
+    fun loadBeforeData(data: LatestData)
     fun onError(e: Throwable)
     fun onSuccess(text: String)
 }

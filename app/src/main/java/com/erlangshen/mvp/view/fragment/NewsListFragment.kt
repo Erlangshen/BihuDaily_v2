@@ -30,13 +30,13 @@ class NewsListFragment : BaseFragment<NewsListPresenter>(), INewsListView {
     val TAG: String = "abc"
     var mAdapter: NewsListAdapter? = null
 
-    override fun loadNewsList(stories: MutableList<LatestData.StoriesEntity>) {
-        mAdapter = NewsListAdapter(mActivity as Context, stories!!)
+    override fun loadNewsList(data: LatestData) {
+        mAdapter = NewsListAdapter(mActivity as Context, data!!)
         newsListRv.adapter = mAdapter
     }
 
-    /**这里面的 stories 和 loadNewsList 的 stories 其实是同一个(也就是 presenter 里面的 dataList)，所以数据源改变的时候只要 notifyDataSetChanged 就可以了*/
-    override fun loadBeforeData(stories: MutableList<LatestData.StoriesEntity>) {
+    /**这里面的 data 和 loadNewsList 的 data 其实是同一个(也就是 presenter 里面的 bihuData)，所以数据源改变的时候只要 notifyDataSetChanged 就可以了*/
+    override fun loadBeforeData(data: LatestData) {
         /**下面这行代码放在 onSuccess 中也可以实现上拉加载更多的功能，如果这样做的话 loadBeforeData 这个方法都可以不要(数据请求成功，刷新一下 adapter 即可)*/
         mAdapter!!.changeLoadMoreStatus(0)
     }
