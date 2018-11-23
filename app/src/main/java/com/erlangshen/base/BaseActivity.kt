@@ -6,8 +6,6 @@ import android.support.v4.app.FragmentActivity
 import android.view.Window
 import android.widget.Toast
 
-import butterknife.ButterKnife
-
 abstract class BaseActivity<P : BasePresenter<*>> : FragmentActivity() {
     protected var mvpPresenter: P? = null
 
@@ -16,7 +14,6 @@ abstract class BaseActivity<P : BasePresenter<*>> : FragmentActivity() {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         super.onCreate(savedInstanceState)
         setContentView(layoutId)
-        ButterKnife.bind(this)
         mvpPresenter = initPresenter()
         initData()
     }

@@ -4,8 +4,9 @@ import com.erlangshen.base.BasePresenter
 import com.erlangshen.mvp.model.LatestData
 import com.erlangshen.mvp.view.INewsListView
 import com.erlangshen.utils.DateUtils
-import com.erlangshen.utils.DateUtils.Companion.date
+import io.reactivex.Observable
 import io.reactivex.observers.DisposableObserver
+import javax.inject.Inject
 
 /**
  * 新闻列表
@@ -16,31 +17,32 @@ class NewsListPresenter(iView: INewsListView) : BasePresenter<INewsListView>() {
     }
 
     var dataList: MutableList<LatestData.StoriesEntity> = mutableListOf()
-    var bihuData: LatestData = LatestData()
+    @Inject
+    lateinit var bihuData: LatestData
     var date: String = ""
     var isRequestDataOk = true
     /**
      * 请求最新新闻
      */
     fun requestNewsListData() {
-        view.showLoading()
+        getView().showLoading()
         val latestData = apiStores.getLatestData("latest")
-        addSubscription(latestData, object : DisposableObserver<LatestData>() {
+        addSubscription(latestData as Observable<*>, object : DisposableObserver<LatestData>() {
             override fun onNext(latestData: LatestData) {
                 bihuData = latestData
                 dataList.clear()
                 dataList.addAll(latestData.stories!!)
-                view.loadNewsList(bihuData)
+                getView().loadNewsList(bihuData)
             }
 
             override fun onError(e: Throwable) {
-                view.onError(e)
-                view.hideLoading()
+                getView().onError(e)
+                getView().hideLoading()
             }
 
             override fun onComplete() {
-                view.onSuccess("请求成功!")
-                view.hideLoading()
+                getView().onSuccess("请求成功!")
+                getView().hideLoading()
             }
         })
     }
@@ -49,7 +51,7 @@ class NewsListPresenter(iView: INewsListView) : BasePresenter<INewsListView>() {
      * 请求往日新闻
      */
     fun requestBeforeData() {
-        view.showLoading()
+        getView().showLoading()
         if (isRequestDataOk) {
             date = DateUtils.getBeforeDay(date)
             var entity = LatestData.StoriesEntity()
@@ -58,22 +60,22 @@ class NewsListPresenter(iView: INewsListView) : BasePresenter<INewsListView>() {
             dataList.add(entity)
         }
         val latestData = apiStores.getBeforeData(date)
-        addSubscription(latestData, object : DisposableObserver<LatestData>() {
+        addSubscription(latestData as Observable<*>, object : DisposableObserver<LatestData>() {
             override fun onNext(latestData: LatestData) {
                 dataList.addAll(latestData.stories!!)
                 bihuData.stories = dataList
-                view.loadBeforeData(bihuData)
+                getView().loadBeforeData(bihuData)
             }
 
             override fun onError(e: Throwable) {
-                view.onError(e)
-                view.hideLoading()
+                getView().onError(e)
+                getView().hideLoading()
                 isRequestDataOk = false
             }
 
             override fun onComplete() {
-                view.onSuccess("请求成功!")
-                view.hideLoading()
+                getView().onSuccess("请求成功!")
+                getView().hideLoading()
                 isRequestDataOk = true
             }
         })

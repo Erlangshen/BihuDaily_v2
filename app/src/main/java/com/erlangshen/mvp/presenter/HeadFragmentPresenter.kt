@@ -9,6 +9,6 @@ class HeadFragmentPresenter(headFragmentView: IHeadFragmentView) : BasePresenter
     }
 
     fun loadImage(imageUrl: String) {
-        view.initPicture(imageUrl)
+        getView().initPicture(imageUrl)
     }
 }

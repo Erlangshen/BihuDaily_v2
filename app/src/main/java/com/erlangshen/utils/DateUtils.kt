@@ -1,12 +1,10 @@
 package com.erlangshen.utils
 
-import com.erlangshen.utils.DateUtils.Companion.convert2SqlDate
 import java.sql.Date
 import java.sql.Timestamp
-import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.Calendar
+import java.util.*
 import java.util.regex.Pattern
 
 class DateUtils {

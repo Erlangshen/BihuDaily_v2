@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 
-import butterknife.ButterKnife
 
 abstract class BaseFragment<P : BasePresenter<*>> : Fragment() {
     protected var mvpPresenter: P? = null
@@ -18,7 +17,6 @@ abstract class BaseFragment<P : BasePresenter<*>> : Fragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater!!.inflate(layoutId, container, false)
-        ButterKnife.bind(this, view)
         mActivity = activity
         mvpPresenter = initPresenter()
         return view
