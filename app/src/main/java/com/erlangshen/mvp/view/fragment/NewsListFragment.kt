@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.WindowManager
 import com.erlangshen.R
-import com.erlangshen.adapter.NewsListAdapter
+import com.erlangshen.mvp.view.adapter.NewsListAdapter
 import com.erlangshen.base.BaseFragment
 import com.erlangshen.mvp.model.LatestData
 import com.erlangshen.mvp.model.MessageEvent

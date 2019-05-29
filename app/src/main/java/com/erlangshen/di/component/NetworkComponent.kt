@@ -1,5 +1,7 @@
 package com.erlangshen.di.component
 
+import com.erlangshen.base.BasePresenter
+import com.erlangshen.base.BaseView
 import com.erlangshen.di.module.NetworkModule
 import com.erlangshen.retrofit.ApiStores
 import dagger.Component
@@ -11,11 +13,5 @@ import javax.inject.Singleton
 @Singleton
 @Component(modules = [(NetworkModule::class)])
 interface NetworkComponent {
-    fun getOKHttpClient(): OkHttpClient
-
-    fun getRetrofit(): Retrofit
-
-    fun getApiStores(): ApiStores
-
-    fun getCompositeDisposable(): CompositeDisposable
+    fun inject(basePresenter: BasePresenter<BaseView>)
 }

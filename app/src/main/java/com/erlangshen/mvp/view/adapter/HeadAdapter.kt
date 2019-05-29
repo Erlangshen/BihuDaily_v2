@@ -1,4 +1,4 @@
-package com.erlangshen.adapter
+package com.erlangshen.mvp.view.adapter
 
 import android.annotation.SuppressLint
 import android.support.v4.app.FragmentManager

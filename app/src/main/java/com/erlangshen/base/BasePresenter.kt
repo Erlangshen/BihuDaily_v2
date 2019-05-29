@@ -1,6 +1,5 @@
 package com.erlangshen.base
 
-import com.erlangshen.di.component.DaggerLatestDataComponent
 import com.erlangshen.di.component.DaggerNetworkComponent
 import com.erlangshen.retrofit.ApiStores
 import io.reactivex.Observable
@@ -8,15 +7,13 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
-import retrofit2.Retrofit
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 abstract class BasePresenter<V : BaseView> {
     init {
         var networkComponent=DaggerNetworkComponent.builder().build()
-        DaggerLatestDataComponent.builder()
-                .networkComponent(networkComponent)
+        DaggerNetworkComponent.builder()
                 .build()
                 .inject(this as BasePresenter<BaseView>)
     }

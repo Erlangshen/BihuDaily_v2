@@ -1,4 +1,4 @@
-package com.erlangshen.adapter
+package com.erlangshen.mvp.view.adapter
 
 import android.content.Context
 import android.os.Handler
